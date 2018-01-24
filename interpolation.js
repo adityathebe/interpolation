@@ -61,6 +61,28 @@ class Interpolation {
 
 		return(results);
 	}
+
+	newtonBackward(point_x) {
+		let d_table = this.dTable();
+		let results = 0;
+		let h = (this.input[1] - this.input[0]);
+		let p = (point_x - this.input[this.input.length - 1] ) / h;
+
+		let getP = (p, index) => {
+			let result = 1;
+			for (let i = 0; i <= index; i++) {
+				result *= ( (p + i) / (i+1) );
+			}
+			return result;
+		}
+
+		for (let i = 0; i < d_table.length; i++) {
+			let current_row = d_table[i]
+			results += current_row[current_row.length - 1] * getP(p, i - 1);
+		}
+
+		return(results);
+	}
 }
 
 module.exports = Interpolation;
